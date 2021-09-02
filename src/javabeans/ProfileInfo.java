@@ -6,7 +6,7 @@ import java.util.HashSet;
 
 import javax.swing.ImageIcon;
 
-public class ProfileInfo implements Serializable {
+public class ProfileInfo implements Serializable, Comparable<ProfileInfo>{
   private static final long serialVersionUID = 88L;
 
   private int userId;
@@ -165,5 +165,10 @@ public class ProfileInfo implements Serializable {
 
   public boolean compareTo(int id){
     return userId > id;
+  }
+
+  @Override
+  public int compareTo(ProfileInfo o) {
+    return this.getUserId()-(o.getUserId());
   }
 }

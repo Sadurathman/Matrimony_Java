@@ -785,9 +785,9 @@ public class Database {
         ps.setBytes(1, null);
       }else {
         // converting buffered image to byte array
-//        WritableRaster raster = img.getRaster();
-//        DataBufferByte data = (DataBufferByte) raster.getDataBuffer();
-//        byte[] extractBytes = data.getData();
+        WritableRaster raster = img.getRaster();
+        DataBufferByte data = (DataBufferByte) raster.getDataBuffer();
+        byte[] extractBytes = data.getData();
         ps.setBytes(1, null);
       }
       ps.setString(2, profileInfo.getName());

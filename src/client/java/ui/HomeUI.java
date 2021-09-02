@@ -9,12 +9,9 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
-import java.awt.image.WritableRaster;
+
 import java.io.IOException;
 import javax.imageio.ImageIO;
-import java.sql.*;
-import javax.swing.JOptionPane;
 
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
@@ -31,11 +28,14 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class HomeUI {
   JPanel mainPanel, headerPanel, leftPanel, rightPanel, suggestionPanel;
   int width, height, count = 0;
   UserDetails userInfo;
+  public static Profiles profiles = null;
 
   public HomeUI(JPanel mainPanel, UserDetails userInfo) {
     Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
@@ -102,7 +102,7 @@ public class HomeUI {
     JLabel name = new JLabel(profileInfo.getName());
     JLabel age = new JLabel(profileInfo.getAge() + "");
     JLabel religion = new JLabel(profileInfo.getReligion());
-    JLabel income = new JLabel("10000");
+    JLabel income = new JLabel(profileInfo.getHeight()+" ft");
     JLabel occupation = new JLabel(profileInfo.getOccupation());
     JLabel state = new JLabel(profileInfo.getState());
     JLabel education = new JLabel(profileInfo.getHighestEducation());
@@ -369,7 +369,13 @@ public class HomeUI {
 
     String gender = userInfo.getBasicDetails().getGender();
     String filter = (gender.equals("MALE") ? "FEMALE" : "MALE");
-    Profiles suggestions = new Client().filter(filter);
+    Profiles suggestions;
+    if(profiles == null){
+    suggestions = new Client().filter(filter);
+    profiles = suggestions;
+    }else{
+      suggestions = profiles;
+    }
 
     System.out.println(suggestions.getProfiles().size());
 
@@ -428,7 +434,11 @@ public class HomeUI {
     // profileInfo.setProfileImageIcon(new
     // ImageIcon("src/client/resource/images/dp.jpg"));
     // suggestions.getProfiles().add(userInfo.getProfileInfo());
-    for (ProfileInfo profileInfo : suggestions.getProfiles()) {
+    ArrayList<ProfileInfo> prof = new ArrayList<>(suggestions.getProfiles());
+    Collections.sort(prof, ProfileInfo::compareTo);
+
+
+    for (ProfileInfo profileInfo : prof) {
       if (count > 8) {
         JPanel insert = scrollList(profileInfo);
         if(insert!=null)

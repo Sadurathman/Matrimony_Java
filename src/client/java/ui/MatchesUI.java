@@ -11,6 +11,8 @@ import javabeans.Profiles;
 import java.awt.Dimension;
 
 import java.awt.Toolkit;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class MatchesUI {
   private static JPanel matchesLeftPanel, matchesRightPanel;
@@ -105,74 +107,8 @@ public class MatchesUI {
     search.setAutoscrolls(true);
     search.setBackground(Color.WHITE);
     rightPanelCompoent(matchesRightPanel);
-
-    /*
-     * JScrollPane scr = new JScrollPane(search); JScrollBar horizontalScrollBar =
-     * new JScrollBar(JScrollBar.VERTICAL) {
-     * 
-     * @Override public boolean isVisible() { return true; } };
-     * search.setBackground(Color.WHITE);
-     * horizontalScrollBar.putClientProperty("JScrollBar.fastWheelScrolling",
-     * Boolean.TRUE); scr.setBorder(new MatteBorder(0, 0, 0, 0, Color.BLACK));
-     * scr.setBounds(0, 0, (width * 3 / 4) - 60, height * 4 / 5);
-     * scr.setWheelScrollingEnabled(true);
-     * scr.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.
-     * HORIZONTAL_SCROLLBAR_NEVER); scr.setBackground(Color.white); for (int i = 0;
-     * i < 10; i++) { search.add(profileTemplate()); }
-     * 
-     * JPanel content = new JPanel(null); content.setPreferredSize(new
-     * Dimension(200, 300)); content.add(scr); matchesRightPanel.add(content); //
-     * matchesLeftPanel.setBounds(0, 70, 300, height);
-     * matchesLeftPanel.setBackground(Color.WHITE);
-     * matchesLeftPanel.setLayout(null);
-     * 
-     * // matchesRightPanel.setBounds(300, 70, width, height);
-     * matchesRightPanel.setBackground(Color.WHITE);
-     */
-
   }
 
-  /*
-   * JPanel profileTemplate() {
-   * 
-   * Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize(); int width
-   * = (int) dimension.getWidth(); int height = (int) dimension.getHeight();
-   * JPanel matchPanel = new JPanel(); matchPanel.setBounds(0, 0, width, height);
-   * 
-   * name = new JLabel(); agelabel = new JLabel(); religion = new JLabel(); Annual
-   * = new JLabel(); occupationtemp = new JLabel(); statetemp = new JLabel();
-   * educationTemp = new JLabel();
-   * 
-   * name.setText("Pika"); agelabel.setText("24 Yrs |");
-   * religion.setText("Hindu |"); Annual.setText("1,20,000/per Year,");
-   * occupationtemp.setText("Teacher |"); statetemp.setText("Tamil Nadu |");
-   * educationTemp.setText("B.E ");
-   * 
-   * name.setBounds(300, 0, 70, 30); agelabel.setBounds(250, 50, 70, 30);
-   * religion.setBounds(310, 50, 70, 30); Annual.setBounds(370, 50, 190, 30);
-   * occupationtemp.setBounds(250, 80, 70, 30); statetemp.setBounds(320, 80, 100,
-   * 30); educationTemp.setBounds(430, 80, 70, 30);
-   * 
-   * name.setFont(new Font("Times New Roman", Font.BOLD, 28));
-   * agelabel.setFont(new Font("Times New Roman", Font.BOLD, 18));
-   * religion.setFont(new Font("Times New Roman", Font.BOLD, 18));
-   * Annual.setFont(new Font("Times New Roman", Font.BOLD, 18));
-   * occupationtemp.setFont(new Font("Times New Roman", Font.BOLD, 18));
-   * statetemp.setFont(new Font("Times New Roman", Font.BOLD, 18));
-   * educationTemp.setFont(new Font("Times New Roman", Font.BOLD, 18));
-   * 
-   * userIcon = new JLabel(new ImageIcon(new
-   * ImageIcon("C:\\Users\\Thani\\Desktop\\mukil\\maxresdefault.jpg").getImage()
-   * .getScaledInstance(200, 200, Image.SCALE_DEFAULT)));
-   * 
-   * matchPanel.setLayout(new FlowLayout()); matchPanel.add(userIcon);
-   * matchPanel.add(name); matchPanel.add(agelabel); matchPanel.add(religion);
-   * matchPanel.add(Annual); matchPanel.add(statetemp);
-   * matchPanel.add(occupationtemp); matchPanel.add(educationTemp);
-   * 
-   * matchPanel.setBackground(Color.WHITE); userIcon.setPreferredSize(new
-   * Dimension(200, 200)); return matchPanel; }
-   */
   public JPanel scrollList(ProfileInfo profileInfo, int type) {
     JPanel userPanel = new JPanel();
     JPanel infoPanel = new JPanel();
@@ -186,7 +122,7 @@ public class MatchesUI {
     JLabel name = new JLabel(profileInfo.getName());
     JLabel age = new JLabel(profileInfo.getAge() + "");
     JLabel religion = new JLabel(profileInfo.getReligion());
-    JLabel income = new JLabel("10000");
+    JLabel income = new JLabel(profileInfo.getHeight()+" ft");
     JLabel occupation = new JLabel(profileInfo.getOccupation());
     JLabel state = new JLabel(profileInfo.getState());
     JLabel education = new JLabel(profileInfo.getHighestEducation());
@@ -285,10 +221,7 @@ public class MatchesUI {
 
   public void rightPanelCompoent(JPanel panel) {
 
-    // String gender = userInfo.getBasicDetails().getGender();
-    // String filter = (gender.equals("MALE") ? "FEMALE " : "MALE ");
-    // Profiles suggestions = new Client().filter(filter);
-    Profiles suggestions = new Client().idToProfiles(userInfo.getProfileInfo().getAcceptedPair());
+    Profiles suggestions = HomeUI.profiles;
 
     panel.setLayout(new BorderLayout());
 
@@ -305,18 +238,10 @@ public class MatchesUI {
     scrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
     scrollPane1.setBackground(Color.white);
 
-//    ProfileInfo profileInfo = new ProfileInfo();
-//    profileInfo.setAge(24);
-//    profileInfo.setOccupation("Youtuber");
-//    profileInfo.setName("Akshaya");
-//    profileInfo.setState("Tamilnadu");
-//    profileInfo.setHighestEducation("B.Tech");
-//    profileInfo.setReligion("Hindu");
-//    profileInfo.setProfileImageIcon(new ImageIcon("src/client/resource/images/dp.jpg"));
-    // suggestions.getProfiles().add(userInfo.getProfileInfo());
-     for (ProfileInfo profileInfo : suggestions.getProfiles()) {
-//    for (int i = 0; i < 10; i++) {
-      listPanel.add(scrollList(profileInfo, 1));
+    ArrayList<ProfileInfo> prof = new ArrayList<>(suggestions.getProfiles());
+    Collections.sort(prof, ProfileInfo::compareTo);
+     for (ProfileInfo profileInfo : prof) {
+      if(userInfo.getProfileInfo().getAcceptedPair().contains(profileInfo.getUserId()))listPanel.add(scrollList(profileInfo, 1));
     }
 
     // Content Panel Starts
@@ -362,25 +287,6 @@ this.mainPanel = mainPanel;
     search.setAutoscrolls(true);
     search.setBackground(Color.WHITE);
     rightPanelCompoent(matchesRightPanel);
-
-    /*
-     * JScrollPane scr = new JScrollPane(search); JScrollBar horizontalScrollBar =
-     * new JScrollBar(JScrollBar.VERTICAL) {
-     * 
-     * @Override public boolean isVisible() { return true; } };
-     * search.setBackground(Color.WHITE);
-     * horizontalScrollBar.putClientProperty("JScrollBar.fastWheelScrolling",
-     * Boolean.TRUE); scr.setBorder(new MatteBorder(0, 0, 0, 0, Color.BLACK));
-     * scr.setBounds(0, 0, (width * 3 / 4) - 60, height * 4 / 5);
-     * scr.setWheelScrollingEnabled(true);
-     * scr.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.
-     * HORIZONTAL_SCROLLBAR_NEVER); scr.setBackground(Color.white); for (int i = 0;
-     * i < 10; i++) { search.add(profileTemplate()); }
-     * 
-     * JPanel content = new JPanel(null); content.setPreferredSize(new
-     * Dimension(200, 300)); content.add(scr); matchesRightPanel.add(content);
-     */
-
   }
 
   public JPanel scrollList(ProfileInfo profileInfo, int type) {
@@ -396,7 +302,7 @@ this.mainPanel = mainPanel;
     JLabel name = new JLabel(profileInfo.getName());
     JLabel age = new JLabel(profileInfo.getAge() + "");
     JLabel religion = new JLabel(profileInfo.getReligion());
-    JLabel income = new JLabel("10000");
+    JLabel income = new JLabel(profileInfo.getHeight()+" ft");
     JLabel occupation = new JLabel(profileInfo.getOccupation());
     JLabel state = new JLabel(profileInfo.getState());
     JLabel education = new JLabel(profileInfo.getHighestEducation());
@@ -495,10 +401,7 @@ this.mainPanel = mainPanel;
 
   public void rightPanelCompoent(JPanel panel) {
 
-    // String gender = userInfo.getBasicDetails().getGender();
-    // String filter = (gender.equals("MALE") ? "FEMALE " : "MALE ");
-    // Profiles suggestions = new Client().filter(filter);
-    Profiles suggestions = new Client().idToProfiles(userInfo.getProfileInfo().getRequestedPair());
+    Profiles suggestions = HomeUI.profiles;
 
     panel.setLayout(new BorderLayout());
 
@@ -515,18 +418,13 @@ this.mainPanel = mainPanel;
     scrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
     scrollPane1.setBackground(Color.white);
 
-//    ProfileInfo profileInfo = new ProfileInfo();
-//    profileInfo.setAge(24);
-//    profileInfo.setOccupation("Youtuber");
-//    profileInfo.setName("Akshaya");
-//    profileInfo.setState("Tamilnadu");
-//    profileInfo.setHighestEducation("B.Tech");
-//    profileInfo.setReligion("Hindu");
-//    profileInfo.setProfileImageIcon(new ImageIcon("src/client/resource/images/dp.jpg"));
-    // suggestions.getProfiles().add(userInfo.getProfileInfo());
-     for (ProfileInfo profileInfo : suggestions.getProfiles()) {
-//    for (int i = 0; i < 10; i++) {
-      listPanel.add(scrollList(profileInfo, 2));
+
+    ArrayList<ProfileInfo> prof = new ArrayList<>(suggestions.getProfiles());
+    Collections.sort(prof, ProfileInfo::compareTo);
+
+     for (ProfileInfo profileInfo : prof) {
+       if(userInfo.getProfileInfo().getRequestedPair().contains(profileInfo.getUserId()))
+          listPanel.add(scrollList(profileInfo, 2));
     }
 
     // Content Panel Starts
@@ -545,49 +443,6 @@ this.mainPanel = mainPanel;
     // adding to right panel
     panel.add(contentPane, BorderLayout.CENTER);
   }
-
-  /*
-   * JPanel profileTemplate() {
-   * 
-   * Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize(); int width
-   * = (int) dimension.getWidth(); int height = (int) dimension.getHeight();
-   * JPanel matchPanel = new JPanel(); matchPanel.setBounds(0, 0, width, height);
-   * 
-   * name = new JLabel(); agelabel = new JLabel(); religion = new JLabel(); Annual
-   * = new JLabel(); occupationtemp = new JLabel(); statetemp = new JLabel();
-   * educationTemp = new JLabel();
-   * 
-   * name.setText("Priya"); agelabel.setText("24 Yrs |");
-   * religion.setText("Hindu |"); Annual.setText("1,20,000/per Year,");
-   * occupationtemp.setText("Teacher |"); statetemp.setText("Tamil Nadu |");
-   * educationTemp.setText("B.E ");
-   * 
-   * name.setBounds(300, 0, 70, 30); agelabel.setBounds(250, 50, 70, 30);
-   * religion.setBounds(310, 50, 70, 30); Annual.setBounds(370, 50, 190, 30);
-   * occupationtemp.setBounds(250, 80, 70, 30); statetemp.setBounds(320, 80, 100,
-   * 30); educationTemp.setBounds(430, 80, 70, 30);
-   * 
-   * name.setFont(new Font("Times New Roman", Font.BOLD, 28));
-   * agelabel.setFont(new Font("Times New Roman", Font.BOLD, 18));
-   * religion.setFont(new Font("Times New Roman", Font.BOLD, 18));
-   * Annual.setFont(new Font("Times New Roman", Font.BOLD, 18));
-   * occupationtemp.setFont(new Font("Times New Roman", Font.BOLD, 18));
-   * statetemp.setFont(new Font("Times New Roman", Font.BOLD, 18));
-   * educationTemp.setFont(new Font("Times New Roman", Font.BOLD, 18));
-   * 
-   * userIcon = new JLabel(new ImageIcon(new
-   * ImageIcon("C:\\Users\\Thani\\Desktop\\mukil\\E4TU9esUcAU2llJ.jpg")
-   * .getImage().getScaledInstance(200, 200, Image.SCALE_DEFAULT)));
-   * 
-   * matchPanel.setLayout(new FlowLayout()); matchPanel.add(userIcon);
-   * matchPanel.add(name); matchPanel.add(agelabel); matchPanel.add(religion);
-   * matchPanel.add(Annual); matchPanel.add(statetemp);
-   * matchPanel.add(occupationtemp); matchPanel.add(educationTemp);
-   * 
-   * matchPanel.setBackground(Color.WHITE); userIcon.setPreferredSize(new
-   * Dimension(200, 200)); return matchPanel; }
-   */
-
 }
 
 class requested {
@@ -612,24 +467,6 @@ JPanel mainPanel;
     search.setAutoscrolls(true);
     search.setBackground(Color.WHITE);
     rightPanelCompoent(matchesRightPanel);
-    /*
-     * JScrollPane scr = new JScrollPane(search); JScrollBar horizontalScrollBar =
-     * new JScrollBar(JScrollBar.VERTICAL) {
-     * 
-     * @Override public boolean isVisible() { return true; } };
-     * search.setBackground(Color.WHITE);
-     * horizontalScrollBar.putClientProperty("JScrollBar.fastWheelScrolling",
-     * Boolean.TRUE); scr.setBorder(new MatteBorder(0, 0, 0, 0, Color.BLACK));
-     * scr.setBounds(0, 0, (width * 3 / 4) - 60, height * 4 / 5);
-     * scr.setWheelScrollingEnabled(true);
-     * scr.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.
-     * HORIZONTAL_SCROLLBAR_NEVER); scr.setBackground(Color.white); for (int i = 0;
-     * i < 10; i++) { search.add(profileTemplate()); }
-     * 
-     * JPanel content = new JPanel(null); content.setPreferredSize(new
-     * Dimension(200, 300)); content.add(scr); matchesRightPanel.add(content);
-     */
-
   }
 
   public JPanel scrollList(ProfileInfo profileInfo, int type) {
@@ -645,7 +482,7 @@ JPanel mainPanel;
     JLabel name = new JLabel(profileInfo.getName());
     JLabel age = new JLabel(profileInfo.getAge() + "");
     JLabel religion = new JLabel(profileInfo.getReligion());
-    JLabel income = new JLabel("10000");
+    JLabel income = new JLabel(profileInfo.getHeight()+" ft");
     JLabel occupation = new JLabel(profileInfo.getOccupation());
     JLabel state = new JLabel(profileInfo.getState());
     JLabel education = new JLabel(profileInfo.getHighestEducation());
@@ -744,9 +581,7 @@ JPanel mainPanel;
 
   public void rightPanelCompoent(JPanel panel) {
 
-    // String gender = userInfo.getBasicDetails().getGender();
-    // String filter = (gender.equals("MALE") ? "FEMALE " : "MALE ");
-     Profiles suggestions = new Client().idToProfiles(userInfo.getProfileInfo().getPairRequest());
+     Profiles suggestions = HomeUI.profiles;
 
     panel.setLayout(new BorderLayout());
 
@@ -763,18 +598,13 @@ JPanel mainPanel;
     scrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
     scrollPane1.setBackground(Color.white);
 
-//    ProfileInfo profileInfo = new ProfileInfo();
-//    profileInfo.setAge(24);
-//    profileInfo.setOccupation("Youtuber");
-//    profileInfo.setName("Akshaya");
-//    profileInfo.setState("Tamilnadu");
-//    profileInfo.setHighestEducation("B.Tech");
-//    profileInfo.setReligion("Hindu");
-//    profileInfo.setProfileImageIcon(new ImageIcon("src/client/resource/images/dp.jpg"));
-    // suggestions.getProfiles().add(userInfo.getProfileInfo());
-     for (ProfileInfo profileInfo : suggestions.getProfiles()) {
-//    for (int i = 0; i < 10; i++) {
-      listPanel.add(scrollList(profileInfo, 3));
+
+    ArrayList<ProfileInfo> prof = new ArrayList<>(suggestions.getProfiles());
+    Collections.sort(prof, ProfileInfo::compareTo);
+
+     for (ProfileInfo profileInfo : prof) {
+       if(userInfo.getProfileInfo().getPairRequest().contains(profileInfo.getUserId()))
+          listPanel.add(scrollList(profileInfo, 3));
     }
 
     // Content Panel Starts
@@ -793,48 +623,4 @@ JPanel mainPanel;
     // adding to right panel
     panel.add(contentPane, BorderLayout.CENTER);
   }
-  /*
-   * JPanel profileTemplate() {
-   * 
-   * Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize(); int width
-   * = (int) dimension.getWidth(); int height = (int) dimension.getHeight();
-   * JPanel matchPanel = new JPanel(); matchPanel.setBounds(0, 0, width, height);
-   * 
-   * name = new JLabel(); agelabel = new JLabel(); religion = new JLabel(); Annual
-   * = new JLabel(); occupationtemp = new JLabel(); statetemp = new JLabel();
-   * educationTemp = new JLabel();
-   * 
-   * name.setText("PS"); agelabel.setText("24 Yrs |");
-   * religion.setText("Hindu |"); Annual.setText("1,20,000/per Year,");
-   * occupationtemp.setText("Teacher |"); statetemp.setText("Tamil Nadu |");
-   * educationTemp.setText("B.E ");
-   * 
-   * name.setBounds(300, 0, 70, 30); agelabel.setBounds(250, 50, 70, 30);
-   * religion.setBounds(310, 50, 70, 30); Annual.setBounds(370, 50, 190, 30);
-   * occupationtemp.setBounds(250, 80, 70, 30); statetemp.setBounds(320, 80, 100,
-   * 30); educationTemp.setBounds(430, 80, 70, 30);
-   * 
-   * name.setFont(new Font("Times New Roman", Font.BOLD, 28));
-   * agelabel.setFont(new Font("Times New Roman", Font.BOLD, 18));
-   * religion.setFont(new Font("Times New Roman", Font.BOLD, 18));
-   * Annual.setFont(new Font("Times New Roman", Font.BOLD, 18));
-   * occupationtemp.setFont(new Font("Times New Roman", Font.BOLD, 18));
-   * statetemp.setFont(new Font("Times New Roman", Font.BOLD, 18));
-   * educationTemp.setFont(new Font("Times New Roman", Font.BOLD, 18));
-   * 
-   * userIcon = new JLabel(new ImageIcon(new
-   * ImageIcon("src/client/resource/images/E4TU9esUcAU2llJ.jpg").getImage()
-   * .getScaledInstance(200, 200, Image.SCALE_DEFAULT)));
-   * 
-   * matchPanel.setLayout(new FlowLayout()); matchPanel.add(userIcon);
-   * matchPanel.add(name); matchPanel.add(agelabel); matchPanel.add(religion);
-   * matchPanel.add(Annual); matchPanel.add(statetemp);
-   * matchPanel.add(occupationtemp); matchPanel.add(educationTemp);
-   * 
-   * matchPanel.setBackground(Color.WHITE); userIcon.setPreferredSize(new
-   * Dimension(200, 200)); return matchPanel;
-   * 
-   * }
-   */
-
 }
